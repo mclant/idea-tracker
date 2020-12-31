@@ -1,0 +1,10 @@
+.deliver-section {
+	border-right: 15px solid #FF4976;
+	min-height: 22vh;
+	width: 100%;
+	margin: 5px 0 5px 0;
+}
+
+p {
+	color: black;
+}

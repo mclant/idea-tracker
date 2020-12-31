@@ -2,6 +2,8 @@
 	text-align: center;
 	z-index: 1;
 	margin-left: auto;
+	overflow: hidden;
+	background-color: #F2F2F2;
   }
   
   .App-logo {
@@ -39,7 +41,7 @@
 	font-size: calc(10px + 2vmin);
 	color: white;
 	position: relative;
-	margin-left: 25%;
+	margin-left: 35vw;
 	transition: margin-left 0.3s ease-out;
   }
   

@@ -1,0 +1,10 @@
+.define-section {
+	border-right: 15px solid #4976FF;
+	min-height: 22vh;
+	width: 100%;
+	margin: 5px 0 5px 0;
+}
+
+p {
+	color: black;
+}

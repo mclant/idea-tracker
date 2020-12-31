@@ -50,21 +50,25 @@ class MainPage extends Component {
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
+			discoverDots={this.state.allDotsMap['Discover']}
 		  />
 		  <DefineSection
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
+			defineDots={this.state.allDotsMap['Define']}
 		  />
 		  <DevelopSection
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
+			developDots={this.state.allDotsMap['Develop']}
 		  />
 		  <DeliverSection
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
+			deliverDots={this.state.allDotsMap['Deliver']}
 		  />
         </header>
       </div>

@@ -19,7 +19,7 @@ class DevelopSection extends Component {
   render() {
     return (
       <div className="develop-section">
-        <Dot dotColor="#49FFD2" />
+        {/* <Dot dotColor="#49FFD2" /> */}
       </div>
     );
   }

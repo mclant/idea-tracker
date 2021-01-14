@@ -19,7 +19,7 @@ class DeliverSection extends Component {
   render() {
     return (
       <div className="deliver-section">
-        <Dot dotColor="#FF4976" />
+        {/* <Dot dotColor="#FF4976" /> */}
       </div>
     );
   }

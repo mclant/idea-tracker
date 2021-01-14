@@ -1,7 +1,8 @@
 import React from 'react'
 import './SlideDrawer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretDown, faMinus, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faMinus, faArrowLeft, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+// import { db } from '../firebase';
 
 class SlideDrawer extends React.Component {
 	constructor() {
@@ -10,15 +11,16 @@ class SlideDrawer extends React.Component {
 			dotId: null,
 			dotAttributesList: [],
 			answerOpenMap: {},
+			testText: 'testing',
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (!this.state.dotId || (this.props.info.dotId !== this.state.dotId)) {
+		if (this.props.show && (!this.state.dotId || (this.props.info.dotId !== this.state.dotId))) {
 			console.log('component did update')
 			let tempAnswerOpenMap = {};
 			this.props.info.dotAttributes.forEach((attribute) => {
-				tempAnswerOpenMap[attribute.id] = false;
+				tempAnswerOpenMap[attribute.answerNumber] = false;
 			});
 			
 			this.setState({ dotId: this.props.info.dotId });
@@ -30,8 +32,44 @@ class SlideDrawer extends React.Component {
 	toggleAnswer (attribute) {
 		console.log({attribute});
 		let tempAnswerOpenMap = this.state.answerOpenMap;
-		tempAnswerOpenMap[attribute.id] = !this.state.answerOpenMap[attribute.id];
+		tempAnswerOpenMap[attribute.answerNumber] = !this.state.answerOpenMap[attribute.answerNumber];
 		this.setState({ answerOpenMap: tempAnswerOpenMap });
+	}
+
+	inputChangeHandler = (event) => {
+		this.setState({ testText: event.target.value });
+	}
+
+	renderEditModeFooter () {
+		return (
+			<>
+				<FontAwesomeIcon
+					icon={faCheck}
+					style={{color: "white"}}
+					onClick={this.props.drawerToggleClickHandler}
+					className="dot"
+				/>
+				<FontAwesomeIcon
+					icon={faTimes}
+					style={{color: "white"}}
+					onClick={this.props.drawerToggleClickHandler}
+					className="dot"
+				/>
+			</>
+		);
+	}
+
+	renderFooter () {
+		return (
+			<>
+				<FontAwesomeIcon
+					icon={faArrowLeft}
+					style={{color: "white"}}
+					onClick={this.props.drawerToggleClickHandler}
+					className="dot"
+				/>
+			</>
+		);
 	}
 
    	render() {
@@ -49,30 +87,32 @@ class SlideDrawer extends React.Component {
 				<div className="body-section">
 					{this.state.dotAttributesList ? (
 						this.state.dotAttributesList.map((attribute) => 
-							<div key={attribute.id} className="question-answer-container">
+							<div key={attribute.answerNumber} className="question-answer-container">
 								<div className="question-container">
 									{attribute.question}
 									<FontAwesomeIcon
-										icon={this.state.answerOpenMap[attribute.id] ? faMinus : faCaretDown}
+										icon={this.state.answerOpenMap[attribute.answerNumber] ? faMinus : faCaretDown}
 										style={{color: "#FFD249"}}
 										onClick={() => this.toggleAnswer(attribute)}
-										className={this.state.answerOpenMap[attribute.id] ? 'minus-icon' : 'down-arrow-icon'}
+										className={this.state.answerOpenMap[attribute.answerNumber] ? 'minus-icon' : 'down-arrow-icon'}
 									/>
 								</div>
-								<div className={this.state.answerOpenMap[attribute.id] ? 'answer-visible' : 'answer-hidden'}>
-									{attribute.answer}
-								</div>
+								<textarea
+									className={this.state.answerOpenMap[attribute.answerNumber] ? 'answer-visible' : 'answer-hidden'}
+									type="text"
+									value={attribute.text}
+									onChange={this.inputChangeHandler}
+								>
+								</textarea>
 							</div>
 						)
 					) : 'empty'}
 				</div>
 				<div className="footer-section">
-					<FontAwesomeIcon
-						icon={faArrowLeft}
-						style={{color: "white"}}
-						onClick={this.props.drawerToggleClickHandler}
-						className="dot"
-					/>
+					{this.props.editMode ? 
+						this.renderEditModeFooter()
+						: this.renderFooter()
+					}
 				</div>
 			</div>
 		)

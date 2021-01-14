@@ -1,5 +1,15 @@
 .dot {
-	font-size: xx-large;
+	font-size: x-large;
 	cursor: pointer;
 	color: black;
-  }
+	padding: 0 5px 0 5px;
+}
+
+.outerCircle {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

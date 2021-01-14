@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './dot-style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+// import { faUsers, faUserCheck } from '@fortawesome/free-solid-svg-icons'
 
 class Dot extends Component {
 	constructor() {
@@ -12,12 +12,13 @@ class Dot extends Component {
 	}
 
 	render() {
+		const iconColor = '#808080';
 		return (
-			<div>
+			<div className="outerCircle" style={{ backgroundColor: this.props.dotColor }}>
 				<FontAwesomeIcon
-					icon={faPlusCircle}
-					style={{color: this.props.dotColor}}
-					onClick={this.props.addDot}
+					icon={this.props.dotIcon}
+					style={{color: iconColor}}
+					onClick={() => this.props.openDotInfo(this.props.dot)}
 					className="dot"
 				/>
 			</div>

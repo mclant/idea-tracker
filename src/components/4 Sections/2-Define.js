@@ -19,7 +19,7 @@ class DefineSection extends Component {
 	render() {
 		return (
 			<div className="define-section">
-				<Dot dotColor="#4976FF" />
+				{/* <Dot dotColor="#4976FF" /> */}
 			</div>
 		);
 	}

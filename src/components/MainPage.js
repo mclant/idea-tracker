@@ -7,6 +7,7 @@ import DevelopSection from './4 Sections/3-Develop';
 import DeliverSection from './4 Sections/4-Deliver';
 import { db } from '../firebase';
 import { Link } from 'react-router-dom';
+import * as PathNameConstants from '../constants/PathNameConstants';
 
 class MainPage extends Component {
 	constructor() {
@@ -26,10 +27,10 @@ class MainPage extends Component {
 
 	componentDidMount () {
 		if (!this.state.storyId) {
-			db.collection('stories').doc('2jtuYF6zpspk8L0pg5Pf').get().then(doc => {
+			db.collection('stories').doc(this.props.location.storyId).get().then(doc => {
 				console.log('doc data: ', doc.data());
 			});
-			db.collection('stories').doc('2jtuYF6zpspk8L0pg5Pf').collection('dots').get().then(dots => {
+			db.collection('stories').doc(this.props.location.storyId).collection('dots').get().then(dots => {
 				let tempStoryMap = {
 					'Discover': [],
 					'Define': [],
@@ -40,7 +41,7 @@ class MainPage extends Component {
 					const dotData = dot.data();
 					tempStoryMap[dotData.section].push(dotData);
 				});
-				this.setState({ storyMap: tempStoryMap, storyId: 'im not null anymore' });
+				this.setState({ storyMap: tempStoryMap, storyId: this.props.location.storyId });
 			});
 		}
 	}
@@ -71,7 +72,7 @@ class MainPage extends Component {
 			editMode={false}
 		/>
         <header className={appClasses}>
-			<Link to='/dashboard'>
+			<Link to={'/' + PathNameConstants.DASHBOARD}>
 				<button>go to dashboard</button>
 			</Link>
 		  <DiscoverSection

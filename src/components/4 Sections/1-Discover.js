@@ -3,7 +3,7 @@ import './1-style.css';
 import Dot from '../Dot.js';
 import { isEmpty } from 'lodash';
 import { faUsers, faUserCheck, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import * as DotConstants from '../../constants/dotInfoConstants' ;
+import * as DotConstants from '../../constants/DotInfoConstants' ;
 
 class DiscoverSection extends Component {
 	constructor() {
@@ -21,7 +21,7 @@ class DiscoverSection extends Component {
 	}
 
 	componentDidUpdate () {
-		if (!this.state.storyId || (this.state.storyId !== this.props.storyId)) {
+		if ((!this.state.storyId && !!this.props.storyId) || (this.state.storyId !== this.props.storyId)) {
 			console.log('props: ', this.props.discoverDots);
 			const discoverDots = this.props.discoverDots;
 			this.setState({

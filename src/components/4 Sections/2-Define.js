@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './2-style.css';
-import Dot from '../Dot.js';
+// import Dot from '../Dot.js';
 
 class DefineSection extends Component {
 	constructor() {

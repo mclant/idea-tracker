@@ -26,44 +26,60 @@ class DiscoverSection extends Component {
 			const discoverDots = this.props.discoverDots;
 			this.setState({
 				storyId: this.props.storyId,
-				identifyPeopleDot: discoverDots.find(dot => dot.title === 'Identify People') || {},
-				choosePeopleDot: discoverDots.find(dot => dot.title === 'Choose People') || {},
-				primaryResearchDot: discoverDots.find(dot => dot.title === 'Primary Research') || {},
-				secondaryResearchDot: discoverDots.find(dot => dot.title === 'Secondary Research') || {},
+				identifyPeopleDot: discoverDots[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] || {},
+				choosePeopleDot: discoverDots[DotConstants.CHOOSE_PEOPLE_DOT_TITLE] || {},
+				primaryResearchDot: discoverDots[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] || {},
+				secondaryResearchDot: discoverDots[DotConstants.SECONDARY_RESEARCH_DOT_TITLE] || {},
 			});
 		}
 	}
 
-	openDotInfo = (currDot) => {
-		console.log({currDot})
-		if (isEmpty(currDot)) {
-			console.log('dot is empty')
+	openIdentifyPeopleDot = () => {
+		if (isEmpty(this.state.identifyPeopleDot)) {
+			console.log('dot is empty', DotConstants.IDENTIFY_PEOPLE_EMPTY_DOT);
+			this.props.changeDrawerInfo(DotConstants.IDENTIFY_PEOPLE_EMPTY_DOT);
 		} else {
-			this.props.changeDrawerInfo({
-				dotId: DotConstants.DISCOVER_DOT_ID,
-				sectionTitle: DotConstants.DISCOVER_DOT_TITLE,
-				sectionSubTitle: currDot.title ? currDot.title : 'empty',
-				dotAttributes: [
-					{
-						answerNumber: 1,
-						question: DotConstants.DISCOVER_DOT_QUESTION_1,
-						text: currDot.answers.find(answer => answer.answerNumber === 1) || '',
-					},
-					{
-						answerNumber: 2,
-						question: DotConstants.DISCOVER_DOT_QUESTION_2,
-						text: currDot.answers.find(answer => answer.answerNumber === 2) || '',
-					},
-					{
-						answerNumber: 3,
-						question: DotConstants.DISCOVER_DOT_QUESTION_3,
-						text: currDot.answers.find(answer => answer.answerNumber === 3) || '',
-					},
-				]
-			})
-			if (!this.props.drawerOpen) {
-				this.props.drawerToggleClickHandler();
-			}
+			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+		}
+
+		if (!this.props.drawerOpen) {
+			this.props.drawerToggleClickHandler();
+		}
+	}
+
+	openChoosePeopleDot = () => {
+		if (isEmpty(this.state.choosePeopleDot)) {
+			this.props.changeDrawerInfo(DotConstants.CHOOSE_PEOPLE_EMPTY_DOT);
+		} else {
+			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+		}
+
+		if (!this.props.drawerOpen) {
+			this.props.drawerToggleClickHandler();
+		}
+	}
+
+	openPrimaryResearchDot = () => {
+		if (isEmpty(this.state.primaryResearchDot)) {
+			this.props.changeDrawerInfo(DotConstants.PRIMARY_RESEARCH_EMPTY_DOT);
+		} else {
+			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+		}
+
+		if (!this.props.drawerOpen) {
+			this.props.drawerToggleClickHandler();
+		}
+	}
+
+	openSecondaryResearchDot = () => {
+		if (isEmpty(this.state.secondaryResearchDot)) {
+			this.props.changeDrawerInfo(DotConstants.SECONDARY_RESEARCH_EMPTY_DOT);
+		} else {
+			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+		}
+
+		if (!this.props.drawerOpen) {
+			this.props.drawerToggleClickHandler();
 		}
 	}
 
@@ -73,7 +89,7 @@ class DiscoverSection extends Component {
 				<div className="first-row">
 					<Dot 
 						dot={this.state.identifyPeopleDot}
-						openDotInfo={this.openDotInfo}
+						openDotInfo={this.openIdentifyPeopleDot}
 						dotColor={isEmpty(this.state.identifyPeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
 						dotIcon={faUsers}
 					/>
@@ -82,19 +98,19 @@ class DiscoverSection extends Component {
 					<div className="second-row">
 						<Dot 
 							dot={this.state.choosePeopleDot}
-							openDotInfo={this.openDotInfo}
+							openDotInfo={this.openChoosePeopleDot}
 							dotColor={isEmpty(this.state.choosePeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
 							dotIcon={faUserCheck}
 						/>
 						<Dot 
 							dot={this.state.primaryResearchDot}
-							openDotInfo={this.openDotInfo}
+							openDotInfo={this.openPrimaryResearchDot}
 							dotColor={isEmpty(this.state.primaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
 							dotIcon={faFileUpload}
 						/>
 						<Dot 
 							dot={this.state.secondaryResearchDot}
-							openDotInfo={this.openDotInfo}
+							openDotInfo={this.openSecondaryResearchDot}
 							dotColor={isEmpty(this.state.secondaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
 							dotIcon={faFileUpload}
 						/>

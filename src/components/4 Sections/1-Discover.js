@@ -3,7 +3,7 @@ import './1-style.css';
 import Dot from '../Dot.js';
 import { isEmpty } from 'lodash';
 import { faUsers, faUserCheck, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import * as DotConstants from '../../constants/DotInfoConstants' ;
+import * as DotConstants from '../../constants/DotConstants' ;
 
 class DiscoverSection extends Component {
 	constructor() {

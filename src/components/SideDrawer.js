@@ -36,7 +36,6 @@ class SlideDrawer extends React.Component {
 	}
 
 	toggleAnswer (qa_pair) {
-		console.log({qa_pair});
 		let tempAnswerOpenMap = this.state.answerOpenMap;
 		tempAnswerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] = !this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]];
 		this.setState({ answerOpenMap: tempAnswerOpenMap });
@@ -53,7 +52,7 @@ class SlideDrawer extends React.Component {
 	}
 
 	saveChanges = () => {
-		this.props.updateDotInfo(
+		this.props.saveDotInfoChanges(
 			this.state.dotId,
 			this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION],
 			{
@@ -72,7 +71,7 @@ class SlideDrawer extends React.Component {
 
 	renderEditModeFooter () {
 		return (
-			<>
+			<div className="edit-footer-section">
 				<FontAwesomeIcon
 					icon={faCheck}
 					style={{color: "white"}}
@@ -85,20 +84,20 @@ class SlideDrawer extends React.Component {
 					onClick={this.cancelChanges}
 					className="dot"
 				/>
-			</>
+			</div>
 		);
 	}
 
 	renderFooter () {
 		return (
-			<>
+			<div className="footer-section">
 				<FontAwesomeIcon
 					icon={faArrowLeft}
 					style={{color: "white"}}
 					onClick={this.props.drawerToggleClickHandler}
 					className="dot"
 				/>
-			</>
+			</div>
 		);
 	}
 
@@ -138,12 +137,10 @@ class SlideDrawer extends React.Component {
 						)
 					) : 'empty'}
 				</div>
-				<div className="footer-section">
-					{this.state.hasUnsavedChanges ? 
-						this.renderEditModeFooter()
-						: this.renderFooter()
-					}
-				</div>
+				{this.state.hasUnsavedChanges ? 
+					this.renderEditModeFooter()
+					: this.renderFooter()
+				}
 			</div>
 		)
     }

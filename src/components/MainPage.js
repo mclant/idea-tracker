@@ -45,18 +45,36 @@ class MainPage extends Component {
 		}
 	}
 
-	updateDotInfo = (dotId, storySection, dotData) => {
+	saveDotInfoChanges = (dotId, storySection, dotData) => {
 		console.log({dotData});
 		let currDotId = dotId;
 		// update database first
-		db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).doc(currDotId || '')
-			.set(dotData)
-			.then(docRef => {
-				currDotId = currDotId || docRef.id;
-			})
-			.catch(function(error) {
-				console.error("Error adding document: ", error);
-			});
+		if (currDotId) {
+			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).doc(currDotId)
+				.update(dotData)
+				.then(docRef => {
+					// currDotId = currDotId || docRef.id;
+					console.log('doc successful update', docRef);
+				})
+				.catch(function(error) {
+					console.error("Error adding document: ", error);
+				});
+		} else {
+			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME)
+				.add(dotData)
+				.then(docRef => {
+					// add id to the dot obj
+					console.log('doc successful update: ', docRef);
+					currDotId = docRef.id;
+					db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).doc(currDotId)
+						.update({
+							dotId: docRef.id,
+						});
+				})
+				.catch(function(error) {
+					console.error("Error adding document: ", error);
+				});
+		}
 		
 		// add to state for the frontend to update
 		let updatedStoryMap = this.state.storyMap;
@@ -91,7 +109,7 @@ class MainPage extends Component {
 			info={this.state.drawerInfo}
 			drawerToggleClickHandler={this.drawerToggleClickHandler}
 			editMode={false}
-			updateDotInfo={this.updateDotInfo}
+			saveDotInfoChanges={this.saveDotInfoChanges}
 		/>
         <header className={appClasses}>
 			<Link to={'/' + PathNameConstants.DASHBOARD}>
@@ -109,21 +127,18 @@ class MainPage extends Component {
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
 			defineDots={this.state.storyMap[DatabaseInfoConstants.DEFINE_SECTION_TITLE]}
-			updateDotInfo={this.updateDotInfo}
 		  />
 		  <DevelopSection
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
 			developDots={this.state.storyMap[DatabaseInfoConstants.DEVELOP_SECTION_TITLE]}
-			updateDotInfo={this.updateDotInfo}
 		  />
 		  <DeliverSection
 		  	drawerToggleClickHandler={this.drawerToggleClickHandler}
 			drawerOpen={this.state.drawerOpen}
 			changeDrawerInfo={this.changeDrawerInfo}
 			deliverDots={this.state.storyMap[DatabaseInfoConstants.DELIVER_SECTION_TITLE]}
-			updateDotInfo={this.updateDotInfo}
 		  />
         </header>
       </div>

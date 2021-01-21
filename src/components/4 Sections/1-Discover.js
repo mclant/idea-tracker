@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './1-style.css';
 import Dot from '../Dot.js';
 import { isEmpty } from 'lodash';
-import { faUsers, faUserCheck, faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faUserCheck, faMicroscope } from '@fortawesome/free-solid-svg-icons';
 import * as DotConstants from '../../constants/DiscoverDotConstants' ;
 import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 
@@ -114,22 +114,22 @@ class DiscoverSection extends Component {
 				{this.props.progressMap[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] &&
 					<div className="second-row">
 						<Dot 
+							dot={this.state.primaryResearchDot}
+							openDotInfo={this.openPrimaryResearchDot}
+							dotColor={this.props.progressMap[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
+							dotIcon={faMicroscope}
+						/>
+						<Dot 
 							dot={this.state.choosePeopleDot}
 							openDotInfo={this.openChoosePeopleDot}
 							dotColor={this.props.progressMap[DotConstants.CHOOSE_PEOPLE_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 							dotIcon={faUserCheck}
 						/>
 						<Dot 
-							dot={this.state.primaryResearchDot}
-							openDotInfo={this.openPrimaryResearchDot}
-							dotColor={this.props.progressMap[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
-							dotIcon={faFileUpload}
-						/>
-						<Dot 
 							dot={this.state.secondaryResearchDot}
 							openDotInfo={this.openSecondaryResearchDot}
 							dotColor={this.props.progressMap[DotConstants.SECONDARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
-							dotIcon={faFileUpload}
+							dotIcon={faMicroscope}
 						/>
 					</div>
 				}

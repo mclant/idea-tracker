@@ -132,7 +132,8 @@ class MainPage extends Component {
     let appClasses = 'App-header'
     if(this.state.drawerOpen) {
       appClasses = 'App-header side-drawer-open'
-    }
+	}
+	
     return (
       <div className="App">
         <SideDrawer

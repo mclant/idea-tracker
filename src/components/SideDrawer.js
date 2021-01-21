@@ -76,6 +76,7 @@ class SlideDrawer extends React.Component {
 		);
 		this.setState({
 			hasUnsavedChanges: false,
+			originalQuestionsAndAnswerList: this.state.questionAndAnswersList,
 		});
 	}
 

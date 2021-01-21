@@ -27,6 +27,7 @@ export const USER_ATTRIBUTE_FIRST_NAME = 'first_name';
 export const USER_ATTRIBUTE_LAST_NAME = 'last_name';
 export const USER_ATTRIBUTE_ROLE = 'role';
 export const USER_ATTRIBUTE_STORY_REFERENCES = 'story_references';
+export const USER_ATTRIBUTE_STUDENTS_LIST = 'students_list';
 
 // dot object
 export const DOT_COLLECTION_NAME = 'dots';
@@ -58,3 +59,8 @@ export const DEVELOP_SECTION_DARK_BACKGROUND_COLOR = '';
 export const DEVELOP_SECTION_LIGHT_BACKGROUND_COLOR = '';
 export const DELIVER_SECTION_DARK_BACKGROUND_COLOR = '';
 export const DELIVER_SECTION_LIGHT_BACKGROUND_COLOR = '';
+
+
+// Roles
+export const ROLE_STUDENT = 'student';
+export const ROLE_PROFESSOR = 'professor';

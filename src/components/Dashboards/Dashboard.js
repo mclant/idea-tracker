@@ -71,7 +71,6 @@ const Dashboard = () => {
 	});
 
 	const getUserStories = async (currUserStories) => {
-		console.log({currUserStories});
 		let storiesArray = await Promise.all(currUserStories.map(async story => {
 			const currStory = await story.get();
 			if (currStory.exists) {
@@ -119,9 +118,15 @@ const Dashboard = () => {
 	return (
 		isAuthenticated ? (
 			<div>
-				<SignUpModal isOpen={signUpModalIsOpen} userEmail={user.email} toggleSignUpModal={toggleSignUpModal} />
+				<SignUpModal 
+					isOpen={signUpModalIsOpen}
+					userEmail={user.email}
+					toggleSignUpModal={toggleSignUpModal}
+					user_id={profile.user_id}
+				/>
 				<div>
 					this is the user profile page
+					<button onClick={toggleSignUpModal}>open modal</button>
 					{!isEmpty(profile) && (
 						<div>
 							welcome <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b> 

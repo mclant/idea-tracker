@@ -3,20 +3,20 @@ import './1-style.css';
 import Dot from '../Dot.js';
 import { isEmpty } from 'lodash';
 import { faUsers, faUserCheck, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import * as DotConstants from '../../constants/DotConstants' ;
+import * as DotConstants from '../../constants/DiscoverDotConstants' ;
+import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 
 class DiscoverSection extends Component {
 	constructor() {
 		super()
 		this.state = {
-			drawerOpen: false,
 			darkDotColor: {
-				background: '#ffd249',
-				icon: 'rgba(53, 52, 52, 1)',
+				background: DatabaseInfoConstants.DISCOVER_SECTION_DARK_BACKGROUND_COLOR,
+				icon: DatabaseInfoConstants.ALL_SECTIONS_DARK_ICON_COLOR,
 			},
 			lightDotColor: {
-				background: '#ffe596',
-				icon: 'rgb(128, 128, 128)',
+				background: DatabaseInfoConstants.DISCOVER_SECTION_LIGHT_BACKGROUND_COLOR,
+				icon: DatabaseInfoConstants.ALL_SECTIONS_LIGHT_ICON_COLOR,
 			},
 			storyId: null,
 			identifyPeopleDot: {},
@@ -107,28 +107,28 @@ class DiscoverSection extends Component {
 					<Dot 
 						dot={this.state.identifyPeopleDot}
 						openDotInfo={this.openIdentifyPeopleDot}
-						dotColor={isEmpty(this.state.identifyPeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
+						dotColor={this.props.progressMap[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 						dotIcon={faUsers}
 					/>
 				</div>
-				{!isEmpty(this.state.identifyPeopleDot) &&
+				{this.props.progressMap[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] &&
 					<div className="second-row">
 						<Dot 
 							dot={this.state.choosePeopleDot}
 							openDotInfo={this.openChoosePeopleDot}
-							dotColor={isEmpty(this.state.choosePeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
+							dotColor={this.props.progressMap[DotConstants.CHOOSE_PEOPLE_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 							dotIcon={faUserCheck}
 						/>
 						<Dot 
 							dot={this.state.primaryResearchDot}
 							openDotInfo={this.openPrimaryResearchDot}
-							dotColor={isEmpty(this.state.primaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
+							dotColor={this.props.progressMap[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 							dotIcon={faFileUpload}
 						/>
 						<Dot 
 							dot={this.state.secondaryResearchDot}
 							openDotInfo={this.openSecondaryResearchDot}
-							dotColor={isEmpty(this.state.secondaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
+							dotColor={this.props.progressMap[DotConstants.SECONDARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 							dotIcon={faFileUpload}
 						/>
 					</div>

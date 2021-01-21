@@ -3,12 +3,16 @@ import './SlideDrawer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faMinus, faArrowLeft, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import * as DatabaseInfoConstants from '../constants/DatabaseInfoConstants';
+import update from 'react-addons-update';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class SlideDrawer extends React.Component {
 	constructor() {
 		super()
 		this.state = {
 			dotId: null,
+			originalQuestionsAndAnswerList: [],
 			questionAndAnswersList: [],
 			answerOpenMap: {},
 			hasUnsavedChanges: false,
@@ -16,11 +20,11 @@ class SlideDrawer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.show && 
+		if (this.props.show &&
 			(
 				(this.props.info.dotId !== this.state.dotId) ||
 				(!this.props.info.dotId && 
-					(this.state.questionAndAnswersList !== this.props.info.qa_pairs)
+					(this.state.originalQuestionsAndAnswerList !== this.props.info.qa_pairs)
 				)
 			)
 		) {
@@ -28,10 +32,16 @@ class SlideDrawer extends React.Component {
 			this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS].forEach((qa_pair) => {
 				tempAnswerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] = false;
 			});
+
+			const propsDotId = this.props.info.dotId;
+			const propsQAList = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS];
 			
-			this.setState({ dotId: this.props.info.dotId });
-			this.setState({ answerOpenMap: tempAnswerOpenMap });
-			this.setState({ questionAndAnswersList: this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS] });
+			this.setState({
+				dotId: propsDotId,
+				answerOpenMap: tempAnswerOpenMap,
+				questionAndAnswersList: propsQAList,
+				originalQuestionsAndAnswerList: propsQAList,
+			});
 		}
 	}
 
@@ -42,10 +52,13 @@ class SlideDrawer extends React.Component {
 	}
 
 	inputChangeHandler = (qa_id, event) => {
-		let newQAList = this.state.questionAndAnswersList;
-		const objIndex = newQAList.findIndex(qa_pair => qa_pair[DatabaseInfoConstants.QA_PAIRS_ID] === qa_id);
-		newQAList[objIndex][DatabaseInfoConstants.QA_PAIRS_ANSWER] = event.target.value;
-		this.setState({ 
+		// let newQAList = this.state.questionAndAnswersList;
+		const objIndex = this.state.questionAndAnswersList.findIndex(qa_pair => qa_pair[DatabaseInfoConstants.QA_PAIRS_ID] === qa_id);
+		// newQAList[objIndex][DatabaseInfoConstants.QA_PAIRS_ANSWER] = event.target.value;
+		const newQAList = update(this.state.questionAndAnswersList, {
+			[objIndex]: {[DatabaseInfoConstants.QA_PAIRS_ANSWER]: {$set: event.target.value}}
+		});
+		this.setState({
 			questionAndAnswersList: newQAList,
 			hasUnsavedChanges: true,
 		});
@@ -61,12 +74,34 @@ class SlideDrawer extends React.Component {
 				[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: this.state.questionAndAnswersList,
 			},
 		);
-		this.setState({ hasUnsavedChanges: false });
+		this.setState({
+			hasUnsavedChanges: false,
+		});
+	}
+
+	confirmCancel = () => {
+		confirmAlert({
+			title: 'Are you sure?',
+			message: 'All changes after your last save will be lost.',
+			buttons: [
+			  {
+				label: 'Yes, cancel',
+				onClick: () => this.cancelChanges()
+			  },
+			  {
+				label: 'Exit',
+			  }
+			],
+			closeOnClickOutside: true,
+		  });
 	}
 
 	cancelChanges = () => {
-		this.setState({ questionAndAnswersList: this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS] });
-		this.setState({ hasUnsavedChanges: false });
+		const originalQAList = this.state.originalQuestionsAndAnswerList;
+		this.setState({
+			questionAndAnswersList: originalQAList,
+			hasUnsavedChanges: false,
+		});
 	}
 
 	renderEditModeFooter () {
@@ -81,7 +116,7 @@ class SlideDrawer extends React.Component {
 				<FontAwesomeIcon
 					icon={faTimes}
 					style={{color: "white"}}
-					onClick={this.cancelChanges}
+					onClick={this.confirmCancel}
 					className="dot"
 				/>
 			</div>
@@ -113,30 +148,32 @@ class SlideDrawer extends React.Component {
 					<b>{this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]}</b>
 					<b>{this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]}</b>
 				</div>
-				<div className="body-section">
-					{this.state.questionAndAnswersList ? (
-						this.state.questionAndAnswersList.map((qa_pair) => 
-							<div key={qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]} className="question-answer-container">
-								<div className="question-container">
-									{qa_pair[DatabaseInfoConstants.QA_PAIRS_QUESTION]}
-									<FontAwesomeIcon
-										icon={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? faMinus : faCaretDown}
-										style={{color: "#FFD249"}}
-										onClick={() => this.toggleAnswer(qa_pair)}
-										className={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? 'minus-icon' : 'down-arrow-icon'}
-									/>
+				{/* <div className="scroll"> */}
+					<div className="body-section">
+						{this.state.questionAndAnswersList ? (
+							this.state.questionAndAnswersList.map((qa_pair) => 
+								<div key={qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]} className="question-answer-container">
+									<div className="question-container">
+										{qa_pair[DatabaseInfoConstants.QA_PAIRS_QUESTION]}
+										<FontAwesomeIcon
+											icon={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? faMinus : faCaretDown}
+											style={{color: "#FFD249"}}
+											onClick={() => this.toggleAnswer(qa_pair)}
+											className={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? 'minus-icon' : 'down-arrow-icon'}
+										/>
+									</div>
+									<textarea
+										className={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? 'answer-visible' : 'answer-hidden'}
+										type="text"
+										onChange={(e) => this.inputChangeHandler(qa_pair[DatabaseInfoConstants.QA_PAIRS_ID], e)}
+										value={qa_pair[DatabaseInfoConstants.QA_PAIRS_ANSWER]}
+									>
+									</textarea>
 								</div>
-								<textarea
-									className={this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] ? 'answer-visible' : 'answer-hidden'}
-									type="text"
-									onChange={(e) => this.inputChangeHandler(qa_pair[DatabaseInfoConstants.QA_PAIRS_ID], e)}
-									value={qa_pair[DatabaseInfoConstants.QA_PAIRS_ANSWER]}
-								>
-								</textarea>
-							</div>
-						)
-					) : 'empty'}
-				</div>
+							)
+						) : 'empty'}
+					</div>
+				{/* </div> */}
 				{this.state.hasUnsavedChanges ? 
 					this.renderEditModeFooter()
 					: this.renderFooter()

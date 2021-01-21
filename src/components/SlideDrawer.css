@@ -31,6 +31,13 @@ body {
 	padding: 10px 10px 10px 10px;
 }
 
+/* .scroll {
+	direction: rtl;
+	overflow-y: scroll;
+	height: 100%;
+	padding-left: 17px;
+} */
+
 .body-section {
 	height: 100%;
 	display: flex;
@@ -38,6 +45,8 @@ body {
 	background-color: rgba(0, 0, 0, 1);
 	color: white;
 	font-size: 14px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .question-answer-container {
@@ -70,7 +79,7 @@ body {
 	visibility: visible;
 	background-color: rgba(53, 52, 52, 1);
 	min-height: 50px;
-	min-width: 249px;
+	width: 249px !important;
 	display: flex;
 	padding: 10px 10px 10px 10px;
 	align-items: flex-start;

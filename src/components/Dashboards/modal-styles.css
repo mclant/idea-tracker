@@ -29,8 +29,14 @@
 
 .form-element {
 	padding: 10px 0 10px 0;
+	width: 75%;
 }
 
-.submit-button {
-	
+.professor-name-container {
+	display: flex;
+}
+
+.professor-search-container {
+	display: flex;
+	justify-content: space-around;
 }

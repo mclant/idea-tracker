@@ -73,12 +73,14 @@ const Dashboard = () => {
 	const getUserStories = async (currUserStories) => {
 		let storiesArray = await Promise.all(currUserStories.map(async story => {
 			const currStory = await story.get();
-			return ({
-				storyId: currStory.id,
-				storyTitle: currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE] ? currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE] : DatabaseInfoConstants.STORY_NEW_PROJECT_DEFAULT_TITLE,
-			});
+			if (currStory.exists) {
+				return ({
+					storyId: currStory.id,
+					storyTitle: currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE] || DatabaseInfoConstants.STORY_NEW_PROJECT_DEFAULT_TITLE,
+				});
+			}
 		}));
-		return storiesArray;
+		return storiesArray || null;
 	}
 
 	const toggleSignUpModal = (userInfo) => {
@@ -90,6 +92,7 @@ const Dashboard = () => {
 		// create story and add user to the story's list of 'userIds'
 		db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).add({
 			[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE]: DatabaseInfoConstants.STORY_NEW_PROJECT_DEFAULT_TITLE,
+			[DatabaseInfoConstants.STORY_ATTRIBUTE_PROGRESS_MAP]: DatabaseInfoConstants.STORY_PROGRESS_MAP,
 			[DatabaseInfoConstants.STORY_ATTRIBUTE_USERS]: [
 				db.doc(DatabaseInfoConstants.USER_COLLECTION_NAME + '/' + profile.user_id),
 			],
@@ -115,9 +118,15 @@ const Dashboard = () => {
 	return (
 		isAuthenticated ? (
 			<div>
-				<SignUpModal isOpen={signUpModalIsOpen} userEmail={user.email} toggleSignUpModal={toggleSignUpModal} />
+				<SignUpModal 
+					isOpen={signUpModalIsOpen}
+					userEmail={user.email}
+					toggleSignUpModal={toggleSignUpModal}
+					user_id={profile.user_id}
+				/>
 				<div>
 					this is the user profile page
+					<button onClick={toggleSignUpModal}>open modal</button>
 					{!isEmpty(profile) && (
 						<div>
 							welcome <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b> 
@@ -132,19 +141,23 @@ const Dashboard = () => {
 						{!!stories.length ? (
 							<div className="stories-container">
 								{stories.map(story => {
-									return (
-										<div key={story.storyId}>
-											<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
-												<Button>
-													<Card className={classes.root}>
-														<CardContent>
-															{story.storyTitle}
-														</CardContent>
-													</Card>
-												</Button>
-											</Link>
-										</div>
-									)
+									if (!!story) {
+										return (
+											<div key={story.storyId}>
+												<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
+													<Button>
+														<Card className={classes.root}>
+															<CardContent>
+																{story.storyTitle}
+															</CardContent>
+														</Card>
+													</Button>
+												</Link>
+											</div>
+										)
+									} else {
+										return (<></>);
+									}
 								}
 								)}
 							</div>

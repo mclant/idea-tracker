@@ -2,16 +2,22 @@ import React, {Component} from 'react';
 import './1-style.css';
 import Dot from '../Dot.js';
 import { isEmpty } from 'lodash';
-import { faUsers, faUserCheck, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import * as DotConstants from '../../constants/DotConstants' ;
+import { faUsers, faUserCheck, faMicroscope } from '@fortawesome/free-solid-svg-icons';
+import * as DotConstants from '../../constants/DiscoverDotConstants' ;
+import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 
 class DiscoverSection extends Component {
 	constructor() {
 		super()
 		this.state = {
-			drawerOpen: false,
-			darkDotColor: '#ffd249',
-			lightDotColor: '#ffe596',
+			darkDotColor: {
+				background: DatabaseInfoConstants.DISCOVER_SECTION_DARK_BACKGROUND_COLOR,
+				icon: DatabaseInfoConstants.ALL_SECTIONS_DARK_ICON_COLOR,
+			},
+			lightDotColor: {
+				background: DatabaseInfoConstants.DISCOVER_SECTION_LIGHT_BACKGROUND_COLOR,
+				icon: DatabaseInfoConstants.ALL_SECTIONS_LIGHT_ICON_COLOR,
+			},
 			storyId: null,
 			identifyPeopleDot: {},
 			choosePeopleDot: {},
@@ -20,9 +26,21 @@ class DiscoverSection extends Component {
 		}
 	}
 
+	componentWillReceiveProps () {
+		const discoverDots = this.props.discoverDots;
+		if (!isEmpty(discoverDots)) {
+			this.setState({
+				storyId: this.props.storyId,
+				identifyPeopleDot: discoverDots[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] || {},
+				choosePeopleDot: discoverDots[DotConstants.CHOOSE_PEOPLE_DOT_TITLE] || {},
+				primaryResearchDot: discoverDots[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] || {},
+				secondaryResearchDot: discoverDots[DotConstants.SECONDARY_RESEARCH_DOT_TITLE] || {},
+			});
+		}
+	}
+
 	componentDidUpdate () {
 		if ((!this.state.storyId && !!this.props.storyId) || (this.state.storyId !== this.props.storyId)) {
-			console.log('props: ', this.props.discoverDots);
 			const discoverDots = this.props.discoverDots;
 			this.setState({
 				storyId: this.props.storyId,
@@ -36,7 +54,6 @@ class DiscoverSection extends Component {
 
 	openIdentifyPeopleDot = () => {
 		if (isEmpty(this.state.identifyPeopleDot)) {
-			console.log('dot is empty', DotConstants.IDENTIFY_PEOPLE_EMPTY_DOT);
 			this.props.changeDrawerInfo(DotConstants.IDENTIFY_PEOPLE_EMPTY_DOT);
 		} else {
 			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
@@ -51,7 +68,7 @@ class DiscoverSection extends Component {
 		if (isEmpty(this.state.choosePeopleDot)) {
 			this.props.changeDrawerInfo(DotConstants.CHOOSE_PEOPLE_EMPTY_DOT);
 		} else {
-			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+			this.props.changeDrawerInfo(this.state.choosePeopleDot);
 		}
 
 		if (!this.props.drawerOpen) {
@@ -63,7 +80,7 @@ class DiscoverSection extends Component {
 		if (isEmpty(this.state.primaryResearchDot)) {
 			this.props.changeDrawerInfo(DotConstants.PRIMARY_RESEARCH_EMPTY_DOT);
 		} else {
-			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+			this.props.changeDrawerInfo(this.state.primaryResearchDot);
 		}
 
 		if (!this.props.drawerOpen) {
@@ -75,7 +92,7 @@ class DiscoverSection extends Component {
 		if (isEmpty(this.state.secondaryResearchDot)) {
 			this.props.changeDrawerInfo(DotConstants.SECONDARY_RESEARCH_EMPTY_DOT);
 		} else {
-			this.props.changeDrawerInfo(this.state.identifyPeopleDot);
+			this.props.changeDrawerInfo(this.state.secondaryResearchDot);
 		}
 
 		if (!this.props.drawerOpen) {
@@ -90,29 +107,29 @@ class DiscoverSection extends Component {
 					<Dot 
 						dot={this.state.identifyPeopleDot}
 						openDotInfo={this.openIdentifyPeopleDot}
-						dotColor={isEmpty(this.state.identifyPeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
+						dotColor={this.props.progressMap[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 						dotIcon={faUsers}
 					/>
 				</div>
-				{!isEmpty(this.state.identifyPeopleDot) &&
+				{this.props.progressMap[DotConstants.IDENTIFY_PEOPLE_DOT_TITLE] &&
 					<div className="second-row">
-						<Dot 
-							dot={this.state.choosePeopleDot}
-							openDotInfo={this.openChoosePeopleDot}
-							dotColor={isEmpty(this.state.choosePeopleDot) ? this.state.lightDotColor : this.state.darkDotColor}
-							dotIcon={faUserCheck}
-						/>
 						<Dot 
 							dot={this.state.primaryResearchDot}
 							openDotInfo={this.openPrimaryResearchDot}
-							dotColor={isEmpty(this.state.primaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
-							dotIcon={faFileUpload}
+							dotColor={this.props.progressMap[DotConstants.PRIMARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
+							dotIcon={faMicroscope}
+						/>
+						<Dot 
+							dot={this.state.choosePeopleDot}
+							openDotInfo={this.openChoosePeopleDot}
+							dotColor={this.props.progressMap[DotConstants.CHOOSE_PEOPLE_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
+							dotIcon={faUserCheck}
 						/>
 						<Dot 
 							dot={this.state.secondaryResearchDot}
 							openDotInfo={this.openSecondaryResearchDot}
-							dotColor={isEmpty(this.state.secondaryResearchDot) ? this.state.lightDotColor : this.state.darkDotColor}
-							dotIcon={faFileUpload}
+							dotColor={this.props.progressMap[DotConstants.SECONDARY_RESEARCH_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
+							dotIcon={faMicroscope}
 						/>
 					</div>
 				}

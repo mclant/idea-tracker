@@ -8,7 +8,16 @@ import * as PathNameConstants from './constants/PathNameConstants';
 // import { useAuth0 } from '@auth0/auth0-react';
 
 function App () {
-  // const { isAuthenticated, logout } = useAuth0();
+  // const useAuth0Obj = useAuth0();
+
+  // console.log({useAuth0Obj});
+
+  // const idTokenClaims = useAuth0Obj.getIdTokenClaims();
+  // console.log({idTokenClaims});
+  // const accessTokenSilently = useAuth0Obj.getAccessTokenSilently();
+  // console.log({accessTokenSilently});
+  // const accessTokenWithPopup = useAuth0Obj.getAccessTokenWithPopup();
+  // console.log({accessTokenWithPopup});
 
   // if (isLoading) {
   //   return <div>Loading...</div>

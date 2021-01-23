@@ -12,9 +12,10 @@ class Dot extends Component {
 	}
 
 	render() {
-		const iconColor = '#808080';
+		const dotColor = this.props.dotColor.background;
+		const iconColor = this.props.dotColor.icon;
 		return (
-			<div className="outerCircle" style={{ backgroundColor: this.props.dotColor }}>
+			<div className="outerCircle" style={{ backgroundColor: dotColor }}>
 				<FontAwesomeIcon
 					icon={this.props.dotIcon}
 					style={{color: iconColor}}

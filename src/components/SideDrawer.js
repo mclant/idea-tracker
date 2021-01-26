@@ -16,6 +16,7 @@ class SlideDrawer extends React.Component {
 			questionAndAnswersList: [],
 			answerOpenMap: {},
 			hasUnsavedChanges: false,
+			isBlockedAtCheckpoint: false,
 		}
 	}
 
@@ -35,12 +36,14 @@ class SlideDrawer extends React.Component {
 
 			const propsDotId = this.props.info.dotId;
 			const propsQAList = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS];
+			const isCheckpointBlocked = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_STUCK_AT_CHECKPOINT] || false;
 			
 			this.setState({
 				dotId: propsDotId,
 				answerOpenMap: tempAnswerOpenMap,
 				questionAndAnswersList: propsQAList,
 				originalQuestionsAndAnswerList: propsQAList,
+				isBlockedAtCheckpoint: isCheckpointBlocked,
 			});
 		}
 	}
@@ -151,7 +154,7 @@ class SlideDrawer extends React.Component {
 				</div>
 				{/* <div className="scroll"> */}
 					<div className="body-section">
-						{this.state.questionAndAnswersList ? (
+						{(this.state.questionAndAnswersList && !this.state.isBlockedAtCheckpoint) ? (
 							this.state.questionAndAnswersList.map((qa_pair) => 
 								<div key={qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]} className="question-answer-container">
 									<div className="question-container">

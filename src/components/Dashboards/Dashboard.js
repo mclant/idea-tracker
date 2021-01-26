@@ -13,6 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 import * as PathNameConstants from '../../constants/PathNameConstants';
+import { uniqBy } from 'lodash';
+// import { flatten } from 'lodash/flatten';
+
+import './dashboard-styles.css';
 
 const Dashboard = () => {
 	const { user, isLoading, isAuthenticated } = useAuth0();
@@ -22,6 +26,8 @@ const Dashboard = () => {
 	const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
 	const [stories, setStories] = useState([]);
 	const [isLoadingStories, setIsLoadingStories] = useState(false);
+	const [isLoadingStudentStories, setIsLoadingStudentStories] = useState(false);
+	const [studentStories, setStudentStories] = useState([]);
 
 	const useStyles = makeStyles({
 		root: {
@@ -51,11 +57,38 @@ const Dashboard = () => {
 						const currentUser = querySnapshot.docs[0].data();
 						let userStories = [];
 
+						// get the users personal stories
 						if (!!currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STORY_REFERENCES] && !!currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STORY_REFERENCES].length) {
 							setIsLoadingStories(true);
 							userStories = await getUserStories(currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STORY_REFERENCES]);
 							setIsLoadingStories(false);
 						}
+
+						// get the student's stories if the current user is a professor
+						if (!!currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST] && !!currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST].length) {
+							setIsLoadingStudentStories(true);
+
+
+							let allStudentStories = [];
+							await Promise.all(currentUser[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST].map(async student => {
+								const currStudent = await student.get();
+								if (currStudent.exists) {
+									let currStudentStories = await getUserStories(currStudent.data()[DatabaseInfoConstants.USER_ATTRIBUTE_STORY_REFERENCES]);
+									allStudentStories.push(...currStudentStories);
+								}
+							}));
+
+							let allUniqueStudentStories = []
+							if (!!allStudentStories.length) {
+								allUniqueStudentStories = uniqBy(allStudentStories, story => {
+									return story.storyId;
+								});
+							}
+
+							setStudentStories(allUniqueStudentStories);
+							setIsLoadingStudentStories(false);
+						}
+
 						setStories(userStories);
 						setProfile({
 							user_id: querySnapshot.docs[0].id,
@@ -74,9 +107,15 @@ const Dashboard = () => {
 		let storiesArray = await Promise.all(currUserStories.map(async story => {
 			const currStory = await story.get();
 			if (currStory.exists) {
+				let storyUsers = await Promise.all(currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_USERS].map(async user => {
+					let currUser = await user.get();
+					return currUser.data();
+				}));
+
 				return ({
 					storyId: currStory.id,
 					storyTitle: currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE] || DatabaseInfoConstants.STORY_NEW_PROJECT_DEFAULT_TITLE,
+					storyUsers: storyUsers,
 				});
 			}
 		}));
@@ -172,6 +211,54 @@ const Dashboard = () => {
 							</Card>
 						</Button>
 					</div>
+					{!!profile.role && (profile.role === DatabaseInfoConstants.ROLE_PROFESSOR) && (
+						<div>
+							{isLoadingStudentStories && (
+								<div>Loading student stories...</div>
+							)}
+							{!!studentStories.length ? (
+								<div className="stories-container">
+									<div>Student Stories:</div>
+									{studentStories.map(story => {
+										if (!!story) {
+											return (
+												<div key={story.storyId} className="card-container">
+													<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
+														<Button>
+															<Card className={classes.root}>
+																<CardContent>
+																	{story.storyTitle}
+																</CardContent>
+															</Card>
+														</Button>
+													</Link>
+													<div>
+														{story.storyUsers.map(student => {
+															return (
+																<div key={student.id}>
+																	{
+																		student[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' +
+																		student[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME] + ' ' +
+																		student[DatabaseInfoConstants.USER_ATTRIBUTE_EMAIL]
+																	}
+																</div>
+															)
+														})}
+													</div>
+												</div>
+											)
+										} else {
+											return (<></>);
+										}
+									}
+									)}
+								</div>
+							) : (
+								<div>This is where your students' stories will be shown</div>
+							)}
+						</div>
+					)}
+					
 				</div>
 			</div>
 		) : (

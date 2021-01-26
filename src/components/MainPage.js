@@ -10,6 +10,13 @@ import { Link } from 'react-router-dom';
 import * as PathNameConstants from '../constants/PathNameConstants';
 import * as DatabaseInfoConstants from '../constants/DatabaseInfoConstants';
 import update from 'react-addons-update';
+// import { useHistory } from 'react-router-dom';
+// import { useAuth0 } from '@auth0/auth0-react';
+
+// const CheckUserAuthentication = () => {
+// 	const { logout, isAuthenticated } = useAuth0();
+// 	return { isAuthenticated, logout }
+// }
 
 class MainPage extends Component {
 	constructor() {
@@ -22,12 +29,23 @@ class MainPage extends Component {
 			progressMap: {},
 		}
 	}
-
+	
 	componentDidMount () {
+		// const { userIsAuthenticated, logout } = CheckUserAuthentication();
+
+		// if (!userIsAuthenticated) {
+		// 	logout({ returnTo: 'http://localhost:3000' });
+		// }
+
 		if (!this.state.storyId) {
 			let tempProgressMap = {};
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.props.location.storyId).get().then(doc => {
-				tempProgressMap = doc.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_PROGRESS_MAP];
+				console.log({doc})
+				if (doc.exists) {
+					tempProgressMap = doc.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_PROGRESS_MAP];
+				} else {
+
+				}
 			});
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.props.location.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).get().then(dots => {
 				let tempStoryMap = {
@@ -52,7 +70,7 @@ class MainPage extends Component {
 		}
 	}
 
-	saveDotInfoChanges = (dotId, storySection, dotData) => {
+	saveDotInfoChanges = (dotId, storySection, dotData, hasCheckpoint = false) => {
 		let currDotId = dotId;
 		// update database first
 		if (currDotId) {
@@ -123,13 +141,16 @@ class MainPage extends Component {
 	}
 
 	changeDrawerInfo = (info) => {
+		// check to see if it has a checkpoint
+		// create the dot if it does and somehow dont show the user the questions. 
 		this.setState({
 			drawerInfo: info,
 		})
 	}
 
   render() {
-    let appClasses = 'App-header'
+	let appClasses = 'App-header'
+
     if(this.state.drawerOpen) {
       appClasses = 'App-header side-drawer-open'
 	}

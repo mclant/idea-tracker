@@ -75,15 +75,10 @@ class DefineSection extends Component {
 	}
 
 	openDot = (emptyDot, dotInState, hasCheckpoint = false) => {
-		const updatedEmptyDot = {
-			...emptyDot,
-			[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_STUCK_AT_CHECKPOINT]: hasCheckpoint
-		}
-
 		if (isEmpty(dotInState)) {
-			this.props.changeDrawerInfo(updatedEmptyDot);
+			this.props.changeDrawerInfo(emptyDot, hasCheckpoint);
 		} else {
-			this.props.changeDrawerInfo(dotInState);
+			this.props.changeDrawerInfo(dotInState, hasCheckpoint);
 		}
 
 		if (!this.props.drawerOpen) {

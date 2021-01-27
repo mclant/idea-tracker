@@ -19,7 +19,7 @@ export const STORY_PROGRESS_MAP = {
 	'build_test_finalize': false,
 	'out': false,
 }
-export const STORY_ATTRIBUTE_CHECKPOINT = 'checkpoint';
+export const STORY_ATTRIBUTE_BLOCKED_DOTS = 'blocked_dots';
 
 // user object
 export const USER_COLLECTION_NAME = 'users';

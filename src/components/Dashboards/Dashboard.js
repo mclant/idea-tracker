@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { db } from '../../firebase';
 import firebase from 'firebase';
 import SignUpModal from './SignUpModal';
+import JoinStoryModal from './JoinStoryModal';
 import { isEmpty } from 'lodash';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -24,6 +25,7 @@ const Dashboard = () => {
 
 	const [profile, setProfile] = useState({});
 	const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
+	const [joinStoryModalIsOpen, setJoinStoryModalIsOpen] = useState(false);
 	const [stories, setStories] = useState([]);
 	const [isLoadingStories, setIsLoadingStories] = useState(false);
 	const [isLoadingStudentStories, setIsLoadingStudentStories] = useState(false);
@@ -127,6 +129,15 @@ const Dashboard = () => {
 		setSignUpModalIsOpen(!signUpModalIsOpen);
 	}
 
+	const toggleJoinStoryModal = () => {
+		setJoinStoryModalIsOpen(!joinStoryModalIsOpen);
+	}
+
+	const setNewStories = async (newStories) => {
+		let userStories = await getUserStories(newStories);
+		setStories(userStories);
+	}
+
 	const createNewStory = () => {
 		// create story and add user to the story's list of 'userIds'
 		db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).add({
@@ -162,6 +173,12 @@ const Dashboard = () => {
 					userEmail={user.email}
 					toggleSignUpModal={toggleSignUpModal}
 					user_id={profile.user_id}
+				/>
+				<JoinStoryModal
+					isOpen={joinStoryModalIsOpen}
+					userId={profile.user_id}
+					toggleJoinStoryModal={toggleJoinStoryModal}
+					setNewStories={setNewStories}
 				/>
 				<div>
 					this is the user profile page
@@ -207,6 +224,13 @@ const Dashboard = () => {
 							<Card className={classes.root}>
 								<CardContent>
 									Add a project
+								</CardContent>
+							</Card>
+						</Button>
+						<Button onClick={toggleJoinStoryModal}>
+							<Card className={classes.root}>
+								<CardContent>
+									Join a project
 								</CardContent>
 							</Card>
 						</Button>

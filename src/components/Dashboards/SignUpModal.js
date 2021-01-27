@@ -119,7 +119,7 @@ const SignUpModal = (props) => {
 				[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]: lastName,
 				[DatabaseInfoConstants.USER_ATTRIBUTE_ROLE]: role,
 			});
-			
+
 			setLoadingFinishSignup(false);
 		})
 		.catch(function(error) {
@@ -180,7 +180,7 @@ const SignUpModal = (props) => {
 											</FormControl>
 											<Button
 												onClick={searchForProfessorEmail}
-											>Submit</Button>
+											>Find professor</Button>
 										</div>
 									)
 								)}

@@ -74,11 +74,11 @@ class DefineSection extends Component {
 		}
 	}
 
-	openDot = (emptyDot, dotInState) => {
+	openDot = (emptyDot, dotInState, hasCheckpoint = false) => {
 		if (isEmpty(dotInState)) {
-			this.props.changeDrawerInfo(emptyDot);
+			this.props.changeDrawerInfo(emptyDot, hasCheckpoint);
 		} else {
-			this.props.changeDrawerInfo(dotInState);
+			this.props.changeDrawerInfo(dotInState, hasCheckpoint);
 		}
 
 		if (!this.props.drawerOpen) {
@@ -155,7 +155,7 @@ class DefineSection extends Component {
 						<div className="fourth-row">
 							<Dot 
 								dot={this.state.painDot}
-								openDotInfo={() => this.openDot(DefineDotConstants.PAIN_EMPTY_DOT, this.state.painDot)}
+								openDotInfo={() => this.openDot(DefineDotConstants.PAIN_EMPTY_DOT, this.state.painDot, true)}
 								dotColor={this.props.progressMap[DefineDotConstants.PAIN_DOT_TITLE] ? this.state.darkDotColor : this.state.lightDotColor}
 								dotIcon={faUserInjured}
 							/>

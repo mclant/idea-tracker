@@ -95,29 +95,31 @@ const SignUpModal = (props) => {
 			[DatabaseInfoConstants.USER_ATTRIBUTE_EMAIL]: props.userEmail,
 		})
 		.then(docRef => {
-			db.collection(DatabaseInfoConstants.USER_COLLECTION_NAME).doc(professor.id)
-				.get()
-				.then(doc => {
-					let currentStudentList = doc.data()[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST] || [];
-					currentStudentList.push(db.doc(DatabaseInfoConstants.USER_COLLECTION_NAME + '/' + docRef.id));
+			if (role === DatabaseInfoConstants.ROLE_STUDENT) {
+				db.collection(DatabaseInfoConstants.USER_COLLECTION_NAME).doc(professor.id)
+					.get()
+					.then(doc => {
+						let currentStudentList = doc.data()[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST] || [];
+						currentStudentList.push(db.doc(DatabaseInfoConstants.USER_COLLECTION_NAME + '/' + docRef.id));
 
-					db.collection(DatabaseInfoConstants.USER_COLLECTION_NAME).doc(professor.id)
-					.update({
-						[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST]: currentStudentList,
+						db.collection(DatabaseInfoConstants.USER_COLLECTION_NAME).doc(professor.id)
+						.update({
+							[DatabaseInfoConstants.USER_ATTRIBUTE_STUDENTS_LIST]: currentStudentList,
+						})
+						.catch(err => {
+							console.error({err});
+						});
 					})
 					.catch(err => {
 						console.error({err});
 					});
-				})
-				.catch(err => {
-					console.error({err});
-				});
-
+			}
 			props.toggleSignUpModal({
 				[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME]: firstName,
 				[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]: lastName,
 				[DatabaseInfoConstants.USER_ATTRIBUTE_ROLE]: role,
 			});
+
 			setLoadingFinishSignup(false);
 		})
 		.catch(function(error) {
@@ -178,7 +180,7 @@ const SignUpModal = (props) => {
 											</FormControl>
 											<Button
 												onClick={searchForProfessorEmail}
-											>Submit</Button>
+											>Find professor</Button>
 										</div>
 									)
 								)}
@@ -190,7 +192,13 @@ const SignUpModal = (props) => {
 			<DialogActions>
 				<Button
 					variant="contained"
-					disabled={!firstName || !lastName || !role || !isConnectedToProfessor || loadingFinishSignup}
+					disabled={
+						!firstName ||
+						!lastName ||
+						!role ||
+						(!isConnectedToProfessor && (role === DatabaseInfoConstants.ROLE_STUDENT)) ||
+						loadingFinishSignup
+					}
 					onClick={finishSignUp}
 				>{loadingFinishSignup ? 'Loading...' : 'Finish signing up'}</Button>
 			</DialogActions>

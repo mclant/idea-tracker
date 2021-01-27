@@ -57,4 +57,14 @@
 	  transform: rotate(360deg);
 	}
   }
+
+.title-container {
+	display: flex;
+	justify-content: center;
+}
+
+.dashboard-button {
+	position: absolute;
+	right: 0;
+}
   

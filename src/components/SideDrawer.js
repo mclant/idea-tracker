@@ -16,6 +16,7 @@ class SlideDrawer extends React.Component {
 			questionAndAnswersList: [],
 			answerOpenMap: {},
 			hasUnsavedChanges: false,
+			// isBlockedAtCheckpoint: false,
 		}
 	}
 
@@ -34,13 +35,16 @@ class SlideDrawer extends React.Component {
 			});
 
 			const propsDotId = this.props.info.dotId;
+			console.log({propsDotId});
 			const propsQAList = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS];
-			
+			// const isCheckpointBlocked = this.props.info[DatabaseInfoConstants.STORY_ATTRIBUTE_IS_BLOCKED_BY_DOT] || false;
+
 			this.setState({
 				dotId: propsDotId,
 				answerOpenMap: tempAnswerOpenMap,
 				questionAndAnswersList: propsQAList,
 				originalQuestionsAndAnswerList: propsQAList,
+				// isBlockedAtCheckpoint: isCheckpointBlocked,
 			});
 		}
 	}
@@ -151,7 +155,7 @@ class SlideDrawer extends React.Component {
 				</div>
 				{/* <div className="scroll"> */}
 					<div className="body-section">
-						{this.state.questionAndAnswersList ? (
+						{(this.state.questionAndAnswersList && !this.props.info.isBlocked) ? (
 							this.state.questionAndAnswersList.map((qa_pair) => 
 								<div key={qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]} className="question-answer-container">
 									<div className="question-container">
@@ -172,7 +176,7 @@ class SlideDrawer extends React.Component {
 									</textarea>
 								</div>
 							)
-						) : 'empty'}
+						) : 'Your professor must approve your progress thus far to move past this checkpoint'}
 					</div>
 				{/* </div> */}
 				{this.state.hasUnsavedChanges ? 

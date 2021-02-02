@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 // import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -91,6 +92,7 @@ export default function LandingPage() {
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <LoginButton />
+				  <LogoutButton />
                 </Grid>
                 {/* <Grid item>
                   <Button variant="outlined" color="primary">

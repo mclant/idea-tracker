@@ -79,7 +79,7 @@ body {
 	visibility: visible;
 	background-color: rgba(53, 52, 52, 1);
 	min-height: 50px;
-	width: 249px !important;
+	width: 33vw !important;
 	display: flex;
 	padding: 10px 10px 10px 10px;
 	align-items: flex-start;

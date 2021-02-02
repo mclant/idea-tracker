@@ -24,8 +24,8 @@ import { Button } from '@material-ui/core';
 // }
 
 class MainPage extends Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
 			drawerOpen: false,
 			drawerInfo: {},
@@ -40,13 +40,9 @@ class MainPage extends Component {
 	componentDidMount () {
 		// const { userIsAuthenticated, logout } = CheckUserAuthentication();
 
-		// if (!userIsAuthenticated) {
-		// 	logout({ returnTo: 'http://localhost:3000' });
-		// }
+		
 
-		console.log('component did mount');
 		if (!this.state.storyId) {
-			console.log('in here')
 			let tempProgressMap = {};
 			let tempStoryTitle = '';
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.props.location.storyId).get().then(doc => {
@@ -58,6 +54,7 @@ class MainPage extends Component {
 
 				}
 			});
+			
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.props.location.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).get().then(dots => {
 				let tempStoryMap = {
 					[DatabaseInfoConstants.DISCOVER_SECTION_TITLE]: {},
@@ -85,14 +82,20 @@ class MainPage extends Component {
 
 	saveDotInfoChanges = (dotId, storySection, dotData) => {
 		let currDotId = dotId;
-		console.log({currDotId});
 		// update database first
 		if (currDotId) {
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).doc(currDotId)
 				.update(dotData)
 				.then(docRef => {
 					// currDotId = currDotId || docRef.id;
-					console.log('doc successful update', docRef);
+					this.checkDotCompletion(dotData);
+		
+					// add to state for the frontend to update
+					let updatedStoryMap = this.state.storyMap;
+					updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]] = {
+						...dotData,
+					};
+					this.setState({ storyMap: updatedStoryMap });
 				})
 				.catch(function(error) {
 					console.error("Error adding document: ", error);
@@ -101,29 +104,30 @@ class MainPage extends Component {
 			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME)
 				.add(dotData)
 				.then(docRef => {
-					console.log('add dot')
-					// add id to the dot obj
 					currDotId = docRef.id;
 					db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).doc(currDotId)
 						.update({
 							dotId: docRef.id,
 						});
+					
+					this.checkDotCompletion(dotData);
+		
+					// add to state for the frontend to update
+					let updatedStoryMap = this.state.storyMap;
+
+					updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]] = {
+						...dotData,
+						dotId: currDotId,
+					};
+					this.setState({
+						storyMap: updatedStoryMap,
+						drawerInfo: updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]],
+					});
 				})
 				.catch(function(error) {
 					console.error("Error adding document: ", error);
 				});
 		}
-
-		//check for dot completion
-		this.checkDotCompletion(dotData);
-		
-		// add to state for the frontend to update
-		let updatedStoryMap = this.state.storyMap;
-		updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]] = {
-			dotId: currDotId,
-			...dotData
-		};
-		this.setState({ storyMap: updatedStoryMap });
 	}
 
 	checkDotCompletion = (dotData) => {
@@ -213,16 +217,8 @@ class MainPage extends Component {
 						});
 					}
 				})
-
-			// if (!info.dotId) {
-			// 	// create blocked dot on the story
-				
-			// } else {
-			// 	this.setState({
-			// 		drawerInfo: info,
-			// 	});
-			// }
 		} else {
+			console.log({info});
 			this.setState({
 				drawerInfo: {
 					...info,
@@ -233,6 +229,10 @@ class MainPage extends Component {
 	}
 
   render() {
+	if (!this.props.userIsAuthenticated) {
+		this.props.logout({ returnTo: 'http://localhost:3000' });
+	}
+	
 	let appClasses = 'App-header'
 
     if(this.state.drawerOpen) {

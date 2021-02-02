@@ -14,7 +14,7 @@ const LandingPage = () => {
 	return (
 		// isAuthenticated ? (
 			<div>
-				welcome to connect the dots app bb snitches
+				welcome to the landing page
 				<LoginButton />
 			</div>
 		// ) : (

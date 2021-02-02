@@ -31,11 +31,13 @@ class SlideDrawer extends React.Component {
 		) {
 			let tempAnswerOpenMap = {};
 			this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS].forEach((qa_pair) => {
-				tempAnswerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] = false;
+				if ((this.props.info.dotId === this.state.dotId) || !this.state.dotId) {
+					tempAnswerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] = this.state.answerOpenMap[qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]] || false;
+				}
 			});
 
 			const propsDotId = this.props.info.dotId;
-			console.log({propsDotId});
+			console.log({propsDotId}, 'and props: ', this.props);
 			const propsQAList = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS];
 			// const isCheckpointBlocked = this.props.info[DatabaseInfoConstants.STORY_ATTRIBUTE_IS_BLOCKED_BY_DOT] || false;
 

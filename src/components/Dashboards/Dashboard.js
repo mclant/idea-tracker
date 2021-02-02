@@ -15,12 +15,13 @@ import { useHistory } from 'react-router-dom';
 import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 import * as PathNameConstants from '../../constants/PathNameConstants';
 import { uniqBy } from 'lodash';
-// import { flatten } from 'lodash/flatten';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import './dashboard-styles.css';
 
 const Dashboard = () => {
-	const { user, isLoading, isAuthenticated } = useAuth0();
+	const { user, isLoading, isAuthenticated, logout } = useAuth0();
 	const history = useHistory();
 
 	const [profile, setProfile] = useState({});
@@ -124,6 +125,20 @@ const Dashboard = () => {
 		return storiesArray || null;
 	}
 
+	const forceEmailVerification = () => {
+		confirmAlert({
+			title: 'Please confirm your email',
+			message: 'Verify your email (check your email inbox), logout and then log back in to get started.',
+			buttons: [
+			  {
+				label: 'Logout',
+				onClick: () => logout(),
+			  },
+			],
+			closeOnClickOutside: false,
+		  });
+	}
+
 	const toggleSignUpModal = (userInfo) => {
 		setProfile(userInfo);
 		setSignUpModalIsOpen(!signUpModalIsOpen);
@@ -165,128 +180,134 @@ const Dashboard = () => {
 		return <div>Loading ...</div>;
 	}
 
+	// if (!user.email_verified) {
+	// 	forceEmailVerification();
+	// }
+
 	return (
 		isAuthenticated ? (
-			<div>
-				<SignUpModal 
-					isOpen={signUpModalIsOpen}
-					userEmail={user.email}
-					toggleSignUpModal={toggleSignUpModal}
-					user_id={profile.user_id}
-				/>
-				<JoinStoryModal
-					isOpen={joinStoryModalIsOpen}
-					userId={profile.user_id}
-					toggleJoinStoryModal={toggleJoinStoryModal}
-					setNewStories={setNewStories}
-				/>
 				<div>
-					this is the user profile page
-					<button onClick={toggleSignUpModal}>open modal</button>
-					{!isEmpty(profile) && (
-						<div>
-							welcome <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b> 
-							and hello with your email: <b>{user.email}</b>
-						</div>
-					)}
-					<LogoutButton />
+					<SignUpModal 
+						isOpen={signUpModalIsOpen}
+						userEmail={user.email}
+						toggleSignUpModal={toggleSignUpModal}
+						user_id={profile.user_id}
+					/>
+					<JoinStoryModal
+						isOpen={joinStoryModalIsOpen}
+						userId={profile.user_id}
+						toggleJoinStoryModal={toggleJoinStoryModal}
+						setNewStories={setNewStories}
+					/>
 					<div>
-						{isLoadingStories && (
-							<div>Loading</div>
-						)}
-						{!!stories.length ? (
-							<div className="stories-container">
-								{stories.map(story => {
-									if (!!story) {
-										return (
-											<div key={story.storyId}>
-												<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
-													<Button>
-														<Card className={classes.root}>
-															<CardContent>
-																{story.storyTitle}
-															</CardContent>
-														</Card>
-													</Button>
-												</Link>
-											</div>
-										)
-									} else {
-										return (<></>);
-									}
-								}
-								)}
-							</div>
-						) : (
-							<div>you have no stories</div>
-						)}
-						<Button onClick={createNewStory}>
-							<Card className={classes.root}>
-								<CardContent>
-									Add a project
-								</CardContent>
-							</Card>
-						</Button>
-						<Button onClick={toggleJoinStoryModal}>
-							<Card className={classes.root}>
-								<CardContent>
-									Join a project
-								</CardContent>
-							</Card>
-						</Button>
-					</div>
-					{!!profile.role && (profile.role === DatabaseInfoConstants.ROLE_PROFESSOR) && (
-						<div>
-							{isLoadingStudentStories && (
-								<div>Loading student stories...</div>
+						<div className="left-nav-menu">
+							Dashboard
+						</div>
+						<div className="dashboard">
+							{!isEmpty(profile) && (
+								<div style={{ display: 'flex', flexDirection: 'column' }}>
+									<div>Name: <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b></div>
+									<div>Email: <b>{user.email}</b></div>
+								</div>
 							)}
-							{!!studentStories.length ? (
-								<div className="stories-container">
-									<div>Student Stories:</div>
-									{studentStories.map(story => {
-										if (!!story) {
-											return (
-												<div key={story.storyId} className="card-container">
-													<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
-														<Button>
-															<Card className={classes.root}>
-																<CardContent>
-																	{story.storyTitle}
-																</CardContent>
-															</Card>
-														</Button>
-													</Link>
-													<div>
-														{story.storyUsers.map(student => {
-															return (
-																<div key={student.id}>
-																	{
-																		student[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' +
-																		student[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME] + ' ' +
-																		student[DatabaseInfoConstants.USER_ATTRIBUTE_EMAIL]
-																	}
-																</div>
-															)
-														})}
+							<LogoutButton />
+							<div>
+								{isLoadingStories && (
+									<div>Loading</div>
+								)}
+								{!!stories.length ? (
+									<div className="stories-container">
+										{stories.map(story => {
+											if (!!story) {
+												return (
+													<div key={story.storyId}>
+														<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
+															<Button>
+																<Card className={classes.root}>
+																	<CardContent>
+																		{story.storyTitle}
+																	</CardContent>
+																</Card>
+															</Button>
+														</Link>
 													</div>
-												</div>
-											)
-										} else {
-											return (<></>);
+												)
+											} else {
+												return (<></>);
+											}
 										}
-									}
+										)}
+									</div>
+								) : (
+									<div>you have no stories</div>
+								)}
+								<Button onClick={createNewStory}>
+									<Card className={classes.root}>
+										<CardContent>
+											Create a project
+										</CardContent>
+									</Card>
+								</Button>
+								<Button onClick={toggleJoinStoryModal}>
+									<Card className={classes.root}>
+										<CardContent>
+											Join a project
+										</CardContent>
+									</Card>
+								</Button>
+							</div>
+							{!!profile.role && (profile.role === DatabaseInfoConstants.ROLE_PROFESSOR) && (
+								<div>
+									{isLoadingStudentStories && (
+										<div>Loading student stories...</div>
+									)}
+									{!!studentStories.length ? (
+										<div className="stories-container">
+											<div>Student Stories:</div>
+											{studentStories.map(story => {
+												if (!!story) {
+													return (
+														<div key={story.storyId} className="card-container">
+															<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
+																<Button>
+																	<Card className={classes.root}>
+																		<CardContent>
+																			{story.storyTitle}
+																		</CardContent>
+																	</Card>
+																</Button>
+															</Link>
+															<div>
+																{story.storyUsers.map(student => {
+																	return (
+																		<div key={student.id}>
+																			{
+																				student[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' +
+																				student[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME] + ' ' +
+																				student[DatabaseInfoConstants.USER_ATTRIBUTE_EMAIL]
+																			}
+																		</div>
+																	)
+																})}
+															</div>
+														</div>
+													)
+												} else {
+													return (<></>);
+												}
+											}
+											)}
+										</div>
+									) : (
+										<div>This is where your students' stories will be shown</div>
 									)}
 								</div>
-							) : (
-								<div>This is where your students' stories will be shown</div>
 							)}
 						</div>
-					)}
-					
-				</div>
+					</div>
 			</div>
 		) : (
-			<div>youre not authenticated
+			<div>You must logout and sign back in to continue
 				<LogoutButton />
 			</div>
 		)

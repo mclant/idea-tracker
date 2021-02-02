@@ -81,18 +81,18 @@ const SignUpModal = (props) => {
 							props.toggleJoinStoryModal(false);
 						});
 					} else {
-						alert('The story with this title and teammates email was not found');
+						alert('The story with this title and email was not found');
 						setLoadingFinishJoin(false);
 					}
 				});
 			} else {
-				alert('The story with this title and teammates email was not found');
+				alert('The story with this title and email was not found');
 				setLoadingFinishJoin(false);
 			}
 		})
 		.catch(err => {
 			console.error({err});
-			alert('The story with this title and teammates email was not found');
+			alert('The story with this title and email was not found');
 			setLoadingFinishJoin(false);
 		});
 	}

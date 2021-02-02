@@ -16,28 +16,28 @@
 }
 
 .App-header {
-  background-color: white;
+  background-color: #F2F2F2;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #F2F2F2;
   position: relative;
   margin-left: 0;
   transition: margin-left 0.3s ease-out;
 }
 
 .App-header.side-drawer-open {
-  background-color: white;
+  background-color: #F2F2F2;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #F2F2F2;
   position: relative;
   margin-left: 25%;
   transition: margin-left 0.3s ease-out;

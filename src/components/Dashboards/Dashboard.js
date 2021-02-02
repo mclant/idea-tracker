@@ -180,9 +180,9 @@ const Dashboard = () => {
 		return <div>Loading ...</div>;
 	}
 
-	// if (!user.email_verified) {
-	// 	forceEmailVerification();
-	// }
+	if (!user.email_verified) {
+		forceEmailVerification();
+	}
 
 	return (
 		isAuthenticated ? (

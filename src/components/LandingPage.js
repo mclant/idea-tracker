@@ -1,6 +1,5 @@
 import React from 'react';
 import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 // import CameraIcon from '@material-ui/icons/PhotoCamera';
@@ -15,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { useAuth0 } from '@auth0/auth0-react';
 
 function Copyright() {
   return (
@@ -66,7 +64,6 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function LandingPage() {
   const classes = useStyles();
-  const { isAuthenticated } = useAuth0();
 
   return (
     <React.Fragment>
@@ -94,10 +91,6 @@ export default function LandingPage() {
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <LoginButton />
-				  <LogoutButton />
-					{isAuthenticated && (
-						<Button onClick={() => {window.location.href = 'https://innovationmapper.com/dashboard'}}>Go to dashboard</Button>
-					)}
                 </Grid>
                 {/* <Grid item>
                   <Button variant="outlined" color="primary">

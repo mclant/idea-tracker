@@ -9,7 +9,7 @@ ReactDOM.render(
   <Auth0Provider
     domain="dev-44w0vrpk.us.auth0.com"
     clientId="34eiIz6Hjw8NtvFmyBa0Rqy3CUuEUbDm"
-    redirectUri={'https://innovationmapper.com'}
+    redirectUri={'https://innovationmapper.com/dashboard'}
   >
     <React.StrictMode>
       <App />

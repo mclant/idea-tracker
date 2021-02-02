@@ -6,7 +6,7 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <Button onClick={() => logout({ returnTo: 'http://localhost:3000' })} variant="contained" color="secondary" >
+    <Button onClick={() => logout({ returnTo: 'https://innovationmapper.com/' })} variant="contained" color="secondary" >
       Log Out
     </Button>
   );

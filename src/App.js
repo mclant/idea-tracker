@@ -3,7 +3,7 @@ import './App.css';
 import MainPage from './components/MainPage.js';
 import LandingPage from './components/LandingPage.js';
 import Dashboard from './components/Dashboards/Dashboard';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as PathNameConstants from './constants/PathNameConstants';
 import { useAuth0 } from '@auth0/auth0-react';
 

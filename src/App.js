@@ -32,8 +32,8 @@ function App () {
       <div className="app">
         <Switch>
           <Route path="/" exact component={LandingPage}/>
-          <Route path={"/" + PathNameConstants.CONNECT_THE_DOTS} exact component={(routeProps) => (<MainPage userIsAuthenticated={isAuthenticated} logout={logout} {...routeProps} />)} />
-          <Route path={"/" + PathNameConstants.DASHBOARD} exact component={Dashboard} />
+          <Route path={"/" + PathNameConstants.CONNECT_THE_DOTS} component={(routeProps) => (<MainPage userIsAuthenticated={isAuthenticated} logout={logout} {...routeProps} />)} />
+          <Route path={"/" + PathNameConstants.DASHBOARD} component={Dashboard} />
         </Switch>
       </div>
     </Router>

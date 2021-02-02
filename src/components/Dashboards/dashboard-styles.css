@@ -9,7 +9,7 @@
 	background-color: #707070;
 	display: flex;
 	flex-direction: column;
-	justify-content: start;
+	justify-content: flex-start;
 	align-items: center;
 	padding-top: 20px;
 	color: #F2F2F2;
@@ -17,9 +17,25 @@
 }
 
 .dashboard {
-	position: relative;
+	position: fixed;
 	left: 15vw;
-	width: 85vw;
+	width: 84vw;
 	padding: 10px;
 	background-color: #F2F2F2;
+	height: 100vh;
+	overflow-y: scroll;
+}
+
+.profile-header-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.button-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	padding: 15px;
+	width: 500px;
 }

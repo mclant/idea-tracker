@@ -204,13 +204,15 @@ const Dashboard = () => {
 							Dashboard
 						</div>
 						<div className="dashboard">
-							{!isEmpty(profile) && (
-								<div style={{ display: 'flex', flexDirection: 'column' }}>
-									<div>Name: <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b></div>
-									<div>Email: <b>{user.email}</b></div>
-								</div>
-							)}
-							<LogoutButton />
+							<div className="profile-header-container">
+								{!isEmpty(profile) && (
+									<div style={{ display: 'flex', flexDirection: 'column' }}>
+										<div>Name: <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b></div>
+										<div>Email: <b>{user.email}</b></div>
+									</div>
+								)}
+								<LogoutButton />
+							</div>
 							<div>
 								{isLoadingStories && (
 									<div>Loading</div>
@@ -241,20 +243,14 @@ const Dashboard = () => {
 								) : (
 									<div>you have no stories</div>
 								)}
-								<Button onClick={createNewStory}>
-									<Card className={classes.root}>
-										<CardContent>
-											Create a project
-										</CardContent>
-									</Card>
-								</Button>
-								<Button onClick={toggleJoinStoryModal}>
-									<Card className={classes.root}>
-										<CardContent>
-											Join a project
-										</CardContent>
-									</Card>
-								</Button>
+								<div className="button-container">
+									<Button onClick={createNewStory} variant="contained" color="primary">
+										Create a project
+									</Button>
+									<Button onClick={toggleJoinStoryModal} variant="contained" color="primary">
+										Join a project
+									</Button>
+								</div>
 							</div>
 							{!!profile.role && (profile.role === DatabaseInfoConstants.ROLE_PROFESSOR) && (
 								<div>

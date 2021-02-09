@@ -10,6 +10,7 @@ export const IDENTIFY_PEOPLE_DOT_QUESTION_2 = 'Why are you focusing on these peo
 export const IDENTIFY_PEOPLE_DOT_QUESTION_3 = 'Tasks';
 export const IDENTIFY_PEOPLE_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: IDENTIFY_PEOPLE_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: IDENTIFY_PEOPLE_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -43,6 +44,7 @@ export const CHOOSE_PEOPLE_DOT_QUESTION_3 = 'What clusters of users are there? (
 export const CHOOSE_PEOPLE_DOT_QUESTION_4 = 'What trends about the customers have you found? (show logic on growth trends, show data as well)';
 export const CHOOSE_PEOPLE_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: CHOOSE_PEOPLE_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: CHOOSE_PEOPLE_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -83,6 +85,7 @@ export const PRIMARY_RESEARCH_DOT_QUESTION_4 = 'How many interviews did you cond
 export const PRIMARY_RESEARCH_DOT_QUESTION_5 = 'Information entropy — how many comments from the last interview (or survey) were repeated?  How many were new?'
 export const PRIMARY_RESEARCH_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: PRIMARY_RESEARCH_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: PRIMARY_RESEARCH_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -125,6 +128,7 @@ export const SECONDARY_RESEARCH_DOT_QUESTION_1 = 'What sources did you search?';
 export const SECONDARY_RESEARCH_DOT_QUESTION_2 = 'What data did you gather? (demographics, trends, competitors, profits, etc.)';
 export const SECONDARY_RESEARCH_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: SECONDARY_RESEARCH_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: SECONDARY_RESEARCH_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [

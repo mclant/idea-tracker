@@ -95,7 +95,10 @@ class MainPage extends Component {
 					updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]] = {
 						...dotData,
 					};
-					this.setState({ storyMap: updatedStoryMap });
+					this.setState({
+						storyMap: updatedStoryMap,
+						drawerInfo: updatedStoryMap[storySection][dotData[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]],
+					});
 				})
 				.catch(function(error) {
 					console.error("Error adding document: ", error);
@@ -174,58 +177,16 @@ class MainPage extends Component {
 		})
 	}
 
-	changeDrawerInfo = async (info, hasCheckpoint = false) => {
-		// check to see if it has a checkpoint
-		if (hasCheckpoint) {
-			console.log('has checkpoint here');
-			let blockedDotIds = [];
-			db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).get()
-				.then(docRef => {
-					let blockedDots = docRef.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_BLOCKED_DOTS];
-					if (!!blockedDots && !!blockedDots.length) {
-						blockedDotIds = blockedDots.filter(dot => dot.dotId === info.dotId);
-					}
-					console.log('info dot id: ', info.dotId);
-					console.log({blockedDotIds});
-					console.log({blockedDots});
-
-					if (!blockedDots || !blockedDots.length || !blockedDotIds.length) {
-						// create the blocked dot
-						db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(this.state.storyId).update({
-							[DatabaseInfoConstants.STORY_ATTRIBUTE_BLOCKED_DOTS]: firebase.firestore.FieldValue.arrayUnion({
-								dotId: info.dotId,
-								isBlocked: true,
-								[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: info[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION],
-							}),
-						})
-						.then(() => {
-							console.log('success');
-						})
-						console.log('setting state as blocked');
-						this.setState({
-							drawerInfo: {
-								...info,
-								isBlocked: true,
-							}
-						});
-					} else {
-						this.setState({
-							drawerInfo: {
-								...info,
-								isBlocked: blockedDotIds[0].isBlocked,
-							}
-						});
-					}
-				})
-		} else {
-			console.log({info});
-			this.setState({
-				drawerInfo: {
-					...info,
-					isBlocked: false,
-				}
-			});
-		}
+	changeDrawerInfo = async (info) => {
+		this.saveDotInfoChanges(
+			info.dotId,
+			info[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION],
+			{
+				dotId: info.dotId,
+				...info,
+				[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS],
+			},
+		);
 	}
 
   render() {

@@ -74,11 +74,11 @@ class DefineSection extends Component {
 		}
 	}
 
-	openDot = (emptyDot, dotInState, hasCheckpoint = false) => {
+	openDot = (emptyDot, dotInState) => {
 		if (isEmpty(dotInState)) {
-			this.props.changeDrawerInfo(emptyDot, hasCheckpoint);
+			this.props.changeDrawerInfo(emptyDot);
 		} else {
-			this.props.changeDrawerInfo(dotInState, hasCheckpoint);
+			this.props.changeDrawerInfo(dotInState);
 		}
 
 		if (!this.props.drawerOpen) {

@@ -13,6 +13,7 @@ export const AFFINITY_MAP_DOT_QUESTION_5 = 'Did you find any surprises and/or co
 export const AFFINITY_MAP_DOT_QUESTION_6 = 'What are the differences between customers?';
 export const AFFINITY_MAP_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: true,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: AFFINITY_MAP_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: AFFINITY_MAP_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -60,6 +61,7 @@ export const SAYING_SECTION = DatabaseInfoConstants.DEFINE_SECTION_TITLE;
 export const SAYING_DOT_QUESTION_1 = 'What are your people saying about their pains/problems?';
 export const SAYING_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: SAYING_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: SAYING_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -77,6 +79,7 @@ export const DOING_SECTION = DatabaseInfoConstants.DEFINE_SECTION_TITLE;
 export const DOING_DOT_QUESTION_1 = 'What are your people doing about their pains/problems?';
 export const DOING_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: DOING_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: DOING_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -94,6 +97,7 @@ export const THINKING_SECTION = DatabaseInfoConstants.DEFINE_SECTION_TITLE;
 export const THINKING_DOT_QUESTION_1 = 'What are your people thinking about their pains/problems?';
 export const THINKING_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: THINKING_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: THINKING_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -111,6 +115,7 @@ export const FEELING_SECTION = DatabaseInfoConstants.DEFINE_SECTION_TITLE;
 export const FEELING_DOT_QUESTION_1 = 'What are your people feeling about their pains/problems?';
 export const FEELING_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: FEELING_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: FEELING_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -139,6 +144,7 @@ export const PERSONA_DOT_QUESTION_5 = 'What are their values? (what do they care
 export const PERSONA_DOT_QUESTION_6 = 'Write a sketch of their life including narrative stories from their life:';
 export const PERSONA_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: PERSONA_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: PERSONA_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -185,6 +191,7 @@ export const EXPERIENCE_MAP_DOT_QUESTION_3 = 'For each stage, use ethnographic d
 export const EXPERIENCE_MAP_DOT_QUESTION_4 = 'What are the opportunities to solve the customer’s pain that emerge from your empathy analysis?';
 export const EXPERIENCE_MAP_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: EXPERIENCE_MAP_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: EXPERIENCE_MAP_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [
@@ -232,6 +239,7 @@ export const PAIN_DOT_QUESTION_6 = 'What are the residual pains?';
 export const PAIN_DOT_QUESTION_7 = 'What problems must be overcome to solve this pain? (multi-sided platform, regulations, etc.)';
 export const PAIN_EMPTY_DOT = {
 	dotId: null,
+	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]: PAIN_DOT_TITLE,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_SECTION]: PAIN_SECTION,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS]: [

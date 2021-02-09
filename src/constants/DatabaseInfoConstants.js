@@ -19,7 +19,7 @@ export const STORY_PROGRESS_MAP = {
 	'build_test_finalize': false,
 	'out': false,
 }
-export const STORY_ATTRIBUTE_BLOCKED_DOTS = 'blocked_dots';
+// export const STORY_ATTRIBUTE_BLOCKED_DOTS = 'blocked_dots';
 
 // user object
 export const USER_COLLECTION_NAME = 'users';
@@ -36,7 +36,7 @@ export const DOT_ATTRIBUTE_QA_PAIRS = 'qa_pairs';
 export const DOT_ATTRIBUTE_ICON = 'icon';
 export const DOT_ATTRIBUTE_SECTION = 'section';
 export const DOT_ATTRIBUTE_TITLE = 'title';
-export const DOT_ATTRIBUTE_IS_STUCK_AT_CHECKPOINT = 'is_stuck_at_checkpoint';
+export const DOT_ATTRIBUTE_IS_CHECKPOINT = 'is_checkpoint';
 // qa_pairs array
 export const QA_PAIRS_QUESTION = 'question';
 export const QA_PAIRS_ANSWER = 'answer';

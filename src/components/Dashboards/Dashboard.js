@@ -11,6 +11,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import { useHistory } from 'react-router-dom';
 import * as DatabaseInfoConstants from '../../constants/DatabaseInfoConstants';
 import * as PathNameConstants from '../../constants/PathNameConstants';
@@ -115,10 +116,21 @@ const Dashboard = () => {
 					return currUser.data();
 				}));
 
+				let blockedDot = await db.collection(DatabaseInfoConstants.STORY_COLLECTION_NAME).doc(currStory.id).collection(DatabaseInfoConstants.DOT_COLLECTION_NAME).get().then(dots => {
+					let isBlockedDot = null;
+					dots.forEach(dot => {
+						if (dot.data()[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]) {
+							isBlockedDot = {...dot.data()};
+						}
+					});
+					return isBlockedDot;
+				});
+
 				return ({
 					storyId: currStory.id,
 					storyTitle: currStory.data()[DatabaseInfoConstants.STORY_ATTRIBUTE_TITLE] || DatabaseInfoConstants.STORY_NEW_PROJECT_DEFAULT_TITLE,
 					storyUsers: storyUsers,
+					blockedDot: blockedDot,
 				});
 			}
 		}));
@@ -206,10 +218,10 @@ const Dashboard = () => {
 						<div className="dashboard">
 							<div className="profile-header-container">
 								{!isEmpty(profile) && (
-									<div style={{ display: 'flex', flexDirection: 'column' }}>
+									<Paper elevation={2} style={{ display: 'flex', flexDirection: 'column', padding: '15px' }}>
 										<div>Name: <b>{profile[DatabaseInfoConstants.USER_ATTRIBUTE_FIRST_NAME] + ' ' + profile[DatabaseInfoConstants.USER_ATTRIBUTE_LAST_NAME]}</b></div>
 										<div>Email: <b>{user.email}</b></div>
-									</div>
+									</Paper>
 								)}
 								<LogoutButton />
 							</div>
@@ -218,14 +230,14 @@ const Dashboard = () => {
 									<div>Loading</div>
 								)}
 								{!!stories.length ? (
-									<div className="stories-container">
+									<Paper elevation={2} className="stories-container">
 										{stories.map(story => {
 											if (!!story) {
 												return (
 													<div key={story.storyId}>
 														<Link to={{pathname: '/' + PathNameConstants.CONNECT_THE_DOTS, storyId: story.storyId}}>
 															<Button>
-																<Card className={classes.root}>
+																<Card className="story-card">
 																	<CardContent>
 																		{story.storyTitle}
 																	</CardContent>
@@ -239,7 +251,7 @@ const Dashboard = () => {
 											}
 										}
 										)}
-									</div>
+									</Paper>
 								) : (
 									<div>you have no stories</div>
 								)}
@@ -258,8 +270,8 @@ const Dashboard = () => {
 										<div>Loading student stories...</div>
 									)}
 									{!!studentStories.length ? (
-										<div className="stories-container">
-											<div>Student Stories:</div>
+										<Paper elevation={2} className="student-stories-container">
+											<div><b>Student Stories:</b></div>
 											{studentStories.map(story => {
 												if (!!story) {
 													return (
@@ -273,7 +285,7 @@ const Dashboard = () => {
 																	</Card>
 																</Button>
 															</Link>
-															<div>
+															<div style={{paddingLeft: '15px'}}>
 																{story.storyUsers.map(student => {
 																	return (
 																		<div key={student.id}>
@@ -286,14 +298,25 @@ const Dashboard = () => {
 																	)
 																})}
 															</div>
+															<div style={{paddingLeft: '20px'}}>
+																{!isEmpty(story.blockedDot) && (
+																	<Button
+																		variant="outlined"
+																		color="primary"
+																		onClick={() => {}}
+																	>
+																		Pass Checkpoint at {story.blockedDot[DatabaseInfoConstants.DOT_ATTRIBUTE_TITLE]}
+																	</Button>
+																)}
+															</div>
 														</div>
 													)
 												} else {
-													return (<></>);
+													return (<div key={story.storyId}></div>);
 												}
 											}
 											)}
-										</div>
+										</Paper>
 									) : (
 										<div>This is where your students' stories will be shown</div>
 									)}

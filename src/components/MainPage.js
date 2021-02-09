@@ -5,7 +5,6 @@ import DiscoverSection from './4 Sections/1-Discover';
 import DefineSection from './4 Sections/2-Define';
 import DevelopSection from './4 Sections/3-Develop';
 import DeliverSection from './4 Sections/4-Deliver';
-import firebase from 'firebase';
 import { db } from '../firebase';
 import { Link } from 'react-router-dom';
 import * as PathNameConstants from '../constants/PathNameConstants';

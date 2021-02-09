@@ -122,13 +122,15 @@ const SignUpModal = (props) => {
 					variant="contained"
 					disabled={
 						!creatorEmail ||
-						!storyTitle
+						!storyTitle ||
+						loadingFinishJoin
 					}
 					onClick={joinStory}
 				>{loadingFinishJoin ? 'Loading...' : 'Join story'}</Button>
 				<Button
 					variant="contained"
 					onClick={() => props.toggleJoinStoryModal(false)}
+					disabled={loadingFinishJoin}
 				>Cancel</Button>
 			</DialogActions>
 		</Dialog>

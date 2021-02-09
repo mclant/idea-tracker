@@ -1,13 +1,12 @@
 import * as DatabaseInfoConstants from './DatabaseInfoConstants';
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Identify People Dot
 export const IDENTIFY_PEOPLE_DOT_TITLE = 'Identify People';
 export const IDENTIFY_PEOPLE_SECTION = DatabaseInfoConstants.DISCOVER_SECTION_TITLE;
-export const IDENTIFY_PEOPLE_DOT_QUESTION_1 = 'Who are the people you will focus on?';
-export const IDENTIFY_PEOPLE_DOT_QUESTION_2 = 'Why are you focusing on these people?';
-export const IDENTIFY_PEOPLE_DOT_QUESTION_3 = 'Tasks';
+export const IDENTIFY_PEOPLE_DOT_QUESTION_1 = 'Characteristics of members of the communities (# / community)';
+export const IDENTIFY_PEOPLE_DOT_QUESTION_2 = 'Extreme limits of people with each characteristic (# / characteristic)';
+export const IDENTIFY_PEOPLE_DOT_QUESTION_3 = 'Places, people, experiences in the lives of people in extreme limits (# / extreme limit group)';
 export const IDENTIFY_PEOPLE_EMPTY_DOT = {
 	dotId: null,
 	[DatabaseInfoConstants.DOT_ATTRIBUTE_IS_CHECKPOINT]: false,

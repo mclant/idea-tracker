@@ -6,6 +6,7 @@ import * as DatabaseInfoConstants from '../constants/DatabaseInfoConstants';
 import update from 'react-addons-update';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { isEmpty } from 'lodash';
 
 class SlideDrawer extends React.Component {
 	constructor() {
@@ -21,7 +22,7 @@ class SlideDrawer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.show &&
+		if (this.props.show && !isEmpty(this.props.info) &&
 			(
 				(this.props.info.dotId !== this.state.dotId) ||
 				(!this.props.info.dotId && 
@@ -37,7 +38,6 @@ class SlideDrawer extends React.Component {
 			});
 
 			const propsDotId = this.props.info.dotId;
-			console.log({propsDotId}, 'and props: ', this.props);
 			const propsQAList = this.props.info[DatabaseInfoConstants.DOT_ATTRIBUTE_QA_PAIRS];
 			// const isCheckpointBlocked = this.props.info[DatabaseInfoConstants.STORY_ATTRIBUTE_IS_BLOCKED_BY_DOT] || false;
 
@@ -157,7 +157,7 @@ class SlideDrawer extends React.Component {
 				</div>
 				{/* <div className="scroll"> */}
 					<div className="body-section">
-						{(this.state.questionAndAnswersList && !this.props.info.isBlocked) ? (
+						{(this.state.questionAndAnswersList && !this.props.info.is_checkpoint) ? (
 							this.state.questionAndAnswersList.map((qa_pair) => 
 								<div key={qa_pair[DatabaseInfoConstants.QA_PAIRS_ID]} className="question-answer-container">
 									<div className="question-container">

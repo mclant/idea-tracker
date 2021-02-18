@@ -5,14 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 
+const currHostName = window.location.hostname;
+let currRedirectUri = 'https://innovationmapper.com';
+
+if (currHostName === "localhost" || currHostName === "127.0.0.1") {
+  currRedirectUri = 'http://localhost:3000'
+}
+
 ReactDOM.render(
   <Auth0Provider
     domain="dev-44w0vrpk.us.auth0.com"
     clientId="34eiIz6Hjw8NtvFmyBa0Rqy3CUuEUbDm"
-    redirectUri={'https://innovationmapper.com/dashboard'}
+    redirectUri={`${currRedirectUri}/dashboard`}
   >
     <React.StrictMode>
-      <App />
+      <App currRedirectUri={currRedirectUri}/>
     </React.StrictMode>
   </Auth0Provider>,
   document.getElementById('root')

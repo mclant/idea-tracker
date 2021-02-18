@@ -5,7 +5,7 @@ import DiscoverSection from './4 Sections/1-Discover';
 import DefineSection from './4 Sections/2-Define';
 import DevelopSection from './4 Sections/3-Develop';
 import DeliverSection from './4 Sections/4-Deliver';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import { db } from '../firebase';
 import { Link } from 'react-router-dom';
 import * as PathNameConstants from '../constants/PathNameConstants';
@@ -191,7 +191,7 @@ class MainPage extends Component {
 
   render() {
 	if (!this.props.userIsAuthenticated) {
-		this.props.logout({ returnTo: 'https://innovationmapper.com' });
+		this.props.logout({ returnTo: this.props.currRedirectUri });
 	}
 	
 	let appClasses = 'App-header'

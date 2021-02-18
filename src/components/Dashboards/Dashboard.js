@@ -21,7 +21,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import './dashboard-styles.css';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
 	const { user, isLoading, isAuthenticated, logout } = useAuth0();
 	const history = useHistory();
 
@@ -223,7 +223,7 @@ const Dashboard = () => {
 										<div>Email: <b>{user.email}</b></div>
 									</Paper>
 								)}
-								<LogoutButton />
+								<LogoutButton currRedirectUri={props.currRedirectUri} />
 							</div>
 							<div>
 								{isLoadingStories && (
@@ -327,7 +327,7 @@ const Dashboard = () => {
 			</div>
 		) : (
 			<div>You must logout and sign back in to continue
-				<LogoutButton />
+				<LogoutButton currRedirectUri={props.currRedirectUri} />
 			</div>
 		)
 	)

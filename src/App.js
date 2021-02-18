@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as PathNameConstants from './constants/PathNameConstants';
 import { useAuth0 } from '@auth0/auth0-react';
 
-function App () {
+function App (props) {
   const { isAuthenticated, logout } = useAuth0();
 
   // console.log({useAuth0Obj});
@@ -32,8 +32,8 @@ function App () {
       <div className="app">
         <Switch>
           <Route path="/" exact component={LandingPage}/>
-          <Route path={"/" + PathNameConstants.CONNECT_THE_DOTS} component={(routeProps) => (<MainPage userIsAuthenticated={isAuthenticated} logout={logout} {...routeProps} />)} />
-          <Route path={"/" + PathNameConstants.DASHBOARD} component={Dashboard} />
+          <Route path={"/" + PathNameConstants.CONNECT_THE_DOTS} component={(routeProps) => (<MainPage userIsAuthenticated={isAuthenticated} logout={logout} {...routeProps} currRedirectUri={props.currRedirectUri} />)} />
+          <Route path={"/" + PathNameConstants.DASHBOARD} component={(routeProps) => (<Dashboard currRedirectUri={props.currRedirectUri} />)} />
         </Switch>
       </div>
     </Router>

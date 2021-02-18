@@ -190,7 +190,7 @@ class MainPage extends Component {
 
   render() {
 	if (!this.props.userIsAuthenticated) {
-		this.props.logout({ returnTo: 'https://innovationmapper.com' });
+		this.props.logout({ returnTo: this.props.currRedirectUri });
 	}
 	
 	let appClasses = 'App-header'
